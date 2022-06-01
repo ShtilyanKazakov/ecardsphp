@@ -48,8 +48,9 @@ class DatabaseClient
         $columnsList = implode(", ", $columns);
         $valuesList = implode("','", $values);
         $valuesList = "'" . $valuesList . "'";
-        $insert_sql = 'INSERT INTO ' . $tableName . ' (' . $columnsList . ')' . ' VALUES ' . '(' . $valuesList . ')';
-        return mysqli_query($this->db_connect(), $insert_sql);
+//        $insert_sql = 'INSERT INTO ' . $tableName . ' (' . $columnsList . ')' . ' VALUES ' . '(' . $valuesList . ')';
+//        $stmt = $pdo->prepare('INSERT INTO ' . $tableName . ' (' . $columnsList . ')' . ' VALUES ' . '(' . $valuesList . ')');
+//        $stmt->execute([ 'name' => $name ]);
         //return $this->db_connect()->query($insert_sql);
     }
 
@@ -68,6 +69,9 @@ class DatabaseClient
         $columnsList = implode(", ", $columns);
         $sql = "SELECT $columnsList FROM $tableName WHERE $where ORDER BY $order_by DESC";
 //        $stmt = $this->conn->prepare($sql);
+//        $stmt = $this->db_connect()->prepare($sql);
+//        $stmt->bind_param($prep_count, $columnsList); // 's' specifies the variable type => 'string'
+//        $stmt->execute();
         return mysqli_query($this->conn, $sql);
     }
 

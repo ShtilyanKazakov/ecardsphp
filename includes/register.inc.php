@@ -1,5 +1,8 @@
 <?php
-//session_start();
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 include_once('../db.php');
 $dbClient = new DatabaseClient();
@@ -70,7 +73,7 @@ if (isset($_POST['register'])) {
 //        $results = mysqli_query($conn, $query);
         $dbClient->insert('users',
             [
-                'name',
+                'username',
                 'email',
                 'password',
             ], [
@@ -78,9 +81,8 @@ if (isset($_POST['register'])) {
                 $email,
                 $hashed_password,
             ]);
-            header("Location: C:\MAMP\htdocs\ecards\public\register.php");
-            exit();
+        header("Location: login.php");
+        exit();
     }
 
 }
-//mysqli_close($conn);
