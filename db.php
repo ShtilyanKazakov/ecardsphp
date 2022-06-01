@@ -67,7 +67,7 @@ class DatabaseClient
     {
         $columnsList = implode(", ", $columns);
         $sql = "SELECT $columnsList FROM $tableName WHERE $where ORDER BY $order_by DESC";
-
+//        $stmt = $this->conn->prepare($sql);
         return mysqli_query($this->conn, $sql);
     }
 
