@@ -55,7 +55,7 @@ class DatabaseClient
         $insert_sql = 'INSERT INTO ' . $tableName . ' (' . $columnsList . ')' . ' VALUES ' . '(' . $valuesList . ')';
 //        $stmt = $pdo->prepare('INSERT INTO ' . $tableName . ' (' . $columnsList . ')' . ' VALUES ' . '(' . $valuesList . ')');
 //        $stmt->execute([ 'name' => $name ]);
-        return $this->db_connect()->query($insert_sql);
+        return mysqli_query($this->db_connect(), $insert_sql);
     }
 
     public function insert_ignore($tableName, array $columns, array $values)
@@ -72,6 +72,17 @@ class DatabaseClient
     {
         $columnsList = implode(", ", $columns);
         $sql = "SELECT $columnsList FROM $tableName WHERE $where ORDER BY $order_by DESC";
+//        $stmt = $this->conn->prepare($sql);
+//        $stmt = $this->db_connect()->prepare($sql);
+//        $stmt->bind_param($prep_count, $columnsList); // 's' specifies the variable type => 'string'
+//        $stmt->execute();
+        return mysqli_query($this->conn, $sql);
+    }
+
+    public function select_and($tableName, array $columns, $where1, $where2, $order_by = 'id')
+    {
+        $columnsList = implode(", ", $columns);
+        $sql = "SELECT $columnsList FROM $tableName WHERE $where1 AND $where2 ORDER BY $order_by DESC";
 //        $stmt = $this->conn->prepare($sql);
 //        $stmt = $this->db_connect()->prepare($sql);
 //        $stmt->bind_param($prep_count, $columnsList); // 's' specifies the variable type => 'string'

@@ -1,4 +1,51 @@
-<?php include('../includes/login.inc.php'); ?>
+
+<?php
+////$errors = array();
+include('../includes/login.inc.php');
+//
+//
+//session_start();
+////ini_set('display_errors', 1);
+////ini_set('display_startup_errors', 1);
+////error_reporting(E_ALL);
+//
+//include('../db.php');
+//$dbClient = new DatabaseClient();
+////
+//$errors = array();
+////
+//
+//if (isset($_POST['login'])) {
+//    $username = $dbClient->real_escape_string($_POST['username']);
+//    $password = $dbClient->real_escape_string($_POST['password']);
+//
+//    if (empty($username)) {
+//        array_push($errors, "Username is required");
+//    }
+//    if (empty($password)) {
+//        array_push($errors, "Password is required");
+//    }
+//
+//    if (count($errors) == 0) {
+////        $password = md5($password);
+//        $query = "SELECT * FROM users WHERE username='$username' AND password='$password'";
+//        $results = $dbClient->mysqli_query_func($query);
+//        $user = mysqli_fetch_assoc($results);
+//
+//        if (mysqli_num_rows($results) == 1) {
+//            $_SESSION['username'] = $username;
+//            $_SESSION['user_id'] = $user['id'];
+//            $_SESSION['success'] = "You are now logged in";
+//            header('Location: dashboard.php');
+////            die();
+//        } else {
+//            array_push($errors, "Wrong username/password combination");
+//        }
+//    }
+//}
+
+
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -6,6 +53,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <title>Login</title>
 </head>
 <body>
@@ -19,11 +67,11 @@
                         <div class="card-body p-5">
                             <h2 class="text-uppercase text-center mb-5">Login</h2>
 
-                            <form>
+                            <form method="POST" action="">
 
                                 <div class="form-outline mb-4">
-                                    <label class="form-label" for="form3Example3cg">Email</label>
-                                    <input type="email" name="email" id="form3Example3cg" class="form-control form-control-lg" />
+                                    <label class="form-label" for="form3Example3cg">Username</label>
+                                    <input type="text" name="username" id="form3Example3cg" class="form-control form-control-lg" />
                                 </div>
 
                                 <div class="form-outline mb-4">
@@ -32,12 +80,19 @@
                                 </div>
 
                                 <div class="d-flex justify-content-center">
-                                    <button type="submit"
-                                            class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
+                                    <button type="submit" name="login"
+                                            class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Login</button>
                                 </div>
 
-                                <p class="text-center text-muted mt-5 mb-0">Do not have an account? <a href="#!"
-                                                                                                        class="fw-bold text-body"><u>Login here</u></a></p>
+                                <p class="text-center text-muted mt-5 mb-0">Do not have an account? <a href="register.php"
+                                                                                                        class="fw-bold text-body"><u>Register here</u></a></p>
+                                <?php
+                                if(count($errors) > 0) {
+                                    foreach($errors as $error) {
+                                        echo '<p class="text-center alert alert-danger">'.$error.'</p>';
+                                    }
+                                }
+                                ?>
                             </form>
 
                         </div>
@@ -47,5 +102,9 @@
         </div>
     </div>
 </section>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>
 </body>
 </html>
