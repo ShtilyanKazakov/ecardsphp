@@ -23,6 +23,10 @@ class DatabaseClient
         $this->db = 'ecards_db';
 
         $this->conn = new mysqli($this->host, $this->username, $this->password, $this->db);
+//        $this->conn = new \PDO('mysql:host=localhost;dbname='.$this->db.';charset=utf8mb4', $this->username, $this->password, array(
+//            \PDO::ATTR_EMULATE_PREPARES => false,
+//            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
+//        ));
         return $this->conn;
     }
 
@@ -48,10 +52,10 @@ class DatabaseClient
         $columnsList = implode(", ", $columns);
         $valuesList = implode("','", $values);
         $valuesList = "'" . $valuesList . "'";
-//        $insert_sql = 'INSERT INTO ' . $tableName . ' (' . $columnsList . ')' . ' VALUES ' . '(' . $valuesList . ')';
+        $insert_sql = 'INSERT INTO ' . $tableName . ' (' . $columnsList . ')' . ' VALUES ' . '(' . $valuesList . ')';
 //        $stmt = $pdo->prepare('INSERT INTO ' . $tableName . ' (' . $columnsList . ')' . ' VALUES ' . '(' . $valuesList . ')');
 //        $stmt->execute([ 'name' => $name ]);
-        //return $this->db_connect()->query($insert_sql);
+        return $this->db_connect()->query($insert_sql);
     }
 
     public function insert_ignore($tableName, array $columns, array $values)
