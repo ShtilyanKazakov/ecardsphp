@@ -3,7 +3,7 @@ session_start();
 require_once('../db.php');
 //include('../includes/login.php');
 $errors = array();
-//if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
+if (isset($_SESSION['user_id']) && isset($_SESSION['username'])) {
     ?>
 
     <!doctype html>
@@ -22,5 +22,7 @@ $errors = array();
     </html>
 
 <?php
-//}
+} else {
+    echo 'There is no user in session!';
+}
 ?>

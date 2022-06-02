@@ -1,50 +1,6 @@
-
 <?php
-////$errors = array();
 include('../includes/login.inc.php');
-//
-//
-//session_start();
-////ini_set('display_errors', 1);
-////ini_set('display_startup_errors', 1);
-////error_reporting(E_ALL);
-//
-//include('../db.php');
-//$dbClient = new DatabaseClient();
-////
 //$errors = array();
-////
-//
-//if (isset($_POST['login'])) {
-//    $username = $dbClient->real_escape_string($_POST['username']);
-//    $password = $dbClient->real_escape_string($_POST['password']);
-//
-//    if (empty($username)) {
-//        array_push($errors, "Username is required");
-//    }
-//    if (empty($password)) {
-//        array_push($errors, "Password is required");
-//    }
-//
-//    if (count($errors) == 0) {
-////        $password = md5($password);
-//        $query = "SELECT * FROM users WHERE username='$username' AND password='$password'";
-//        $results = $dbClient->mysqli_query_func($query);
-//        $user = mysqli_fetch_assoc($results);
-//
-//        if (mysqli_num_rows($results) == 1) {
-//            $_SESSION['username'] = $username;
-//            $_SESSION['user_id'] = $user['id'];
-//            $_SESSION['success'] = "You are now logged in";
-//            header('Location: dashboard.php');
-////            die();
-//        } else {
-//            array_push($errors, "Wrong username/password combination");
-//        }
-//    }
-//}
-
-
 ?>
 <!doctype html>
 <html lang="en">
@@ -87,9 +43,18 @@ include('../includes/login.inc.php');
                                 <p class="text-center text-muted mt-5 mb-0">Do not have an account? <a href="register.php"
                                                                                                         class="fw-bold text-body"><u>Register here</u></a></p>
                                 <?php
-                                if(count($errors) > 0) {
-                                    foreach($errors as $error) {
-                                        echo '<p class="text-center alert alert-danger">'.$error.'</p>';
+//                                if(count($danger_errors) > 0) {
+//                                    foreach($danger_errors as $error) {
+//                                        echo '<p class="text-center alert alert-danger">'.$error.'</p>';
+//                                    }
+//                                }
+
+                                if(count($_SESSION['status_warning']) > 0) {
+                                    if(isset($_SESSION['status_warning'])) {
+                                        foreach($_SESSION['status_warning'] as $error) {
+                                            unset($_SESSION['status_warning']);
+                                            echo '<p class="text-center alert alert-warning">'.$error.'</p>';
+                                        }
                                     }
                                 }
                                 ?>
