@@ -46,10 +46,10 @@ session_start();
         <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Test</a>
+                    <a class="nav-link" href="logout.php">Logout</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Test</a>
+                    <a class="nav-link" href="#"><?php echo $_SESSION['username'];  ?></a>
                 </li>
             </ul>
         </div>
