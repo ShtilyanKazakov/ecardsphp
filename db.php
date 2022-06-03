@@ -23,10 +23,6 @@ class DatabaseClient
         $this->db = 'ecards_db';
 
         $this->conn = new mysqli($this->host, $this->username, $this->password, $this->db);
-//        $this->conn = new \PDO('mysql:host=localhost;dbname='.$this->db.';charset=utf8mb4', $this->username, $this->password, array(
-//            \PDO::ATTR_EMULATE_PREPARES => false,
-//            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
-//        ));
         return $this->conn;
     }
 
@@ -53,8 +49,6 @@ class DatabaseClient
         $valuesList = implode("','", $values);
         $valuesList = "'" . $valuesList . "'";
         $insert_sql = 'INSERT INTO ' . $tableName . ' (' . $columnsList . ')' . ' VALUES ' . '(' . $valuesList . ')';
-//        $stmt = $pdo->prepare('INSERT INTO ' . $tableName . ' (' . $columnsList . ')' . ' VALUES ' . '(' . $valuesList . ')');
-//        $stmt->execute([ 'name' => $name ]);
         return mysqli_query($this->db_connect(), $insert_sql);
     }
 
@@ -65,17 +59,12 @@ class DatabaseClient
         $valuesList = "'" . $valuesList . "'";
         $insert_sql = 'INSERT IGNORE INTO ' . $tableName . ' (' . $columnsList . ')' . ' VALUES ' . '(' . $valuesList . ')';
         return mysqli_query($this->db_connect(), $insert_sql);
-        //return $this->db_connect()->query($insert_sql);
     }
 
     public function select($tableName, array $columns, $where = '1=1', $order_by = 'id')
     {
         $columnsList = implode(", ", $columns);
         $sql = "SELECT $columnsList FROM $tableName WHERE $where ORDER BY $order_by DESC";
-//        $stmt = $this->conn->prepare($sql);
-//        $stmt = $this->db_connect()->prepare($sql);
-//        $stmt->bind_param($prep_count, $columnsList); // 's' specifies the variable type => 'string'
-//        $stmt->execute();
         return mysqli_query($this->conn, $sql);
     }
 
@@ -83,10 +72,6 @@ class DatabaseClient
     {
         $columnsList = implode(", ", $columns);
         $sql = "SELECT $columnsList FROM $tableName WHERE $where1 AND $where2 ORDER BY $order_by DESC";
-//        $stmt = $this->conn->prepare($sql);
-//        $stmt = $this->db_connect()->prepare($sql);
-//        $stmt->bind_param($prep_count, $columnsList); // 's' specifies the variable type => 'string'
-//        $stmt->execute();
         return mysqli_query($this->conn, $sql);
     }
 

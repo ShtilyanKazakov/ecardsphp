@@ -43,12 +43,6 @@ include('../includes/login.inc.php');
                                 <p class="text-center text-muted mt-5 mb-0">Do not have an account? <a href="register.php"
                                                                                                         class="fw-bold text-body"><u>Register here</u></a></p>
                                 <?php
-//                                if(count($danger_errors) > 0) {
-//                                    foreach($danger_errors as $error) {
-//                                        echo '<p class="text-center alert alert-danger">'.$error.'</p>';
-//                                    }
-//                                }
-
                                 if(count($_SESSION['status_warning']) > 0) {
                                     if(isset($_SESSION['status_warning'])) {
                                         foreach($_SESSION['status_warning'] as $error) {
