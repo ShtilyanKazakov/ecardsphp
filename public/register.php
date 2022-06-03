@@ -53,38 +53,15 @@ include('../includes/register.inc.php');
 
                                 <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="login.php"
                                                                                                         class="fw-bold text-body"><u>Login here</u></a></p>
-<!--                                <div class="form-outline mb-4">-->
                                     <?php
-//                                    if(isset($_SESSION['status_warning'])) {
-//                                        $message = $_SESSION['status_warning'];
-//                                        unset($_SESSION['status_warning']);
-//                                        echo $message;
-//                                    }
-//                                    if(isset($_SESSION['status_danger'])) {
-//                                        $message = $_SESSION['status_danger'];
-//                                        unset($_SESSION['status_danger']);
-//                                        echo $message;
-//                                    }
-
-//                                    if(count($_SESSION['status_danger']) > 0) {
-//                                        if(isset($_SESSION['status_danger'])) {
-//                                            foreach($_SESSION['status_danger'] as $danger_error) {
-//                                                unset($_SESSION['status_danger']);
-//                                                echo '<p class="text-center alert alert-danger">'.$danger_error.'</p>';
-//                                            }
-//                                        }
-//                                    }
-
                                     if(count($_SESSION['status_warning']) > 0) {
                                         if(isset($_SESSION['status_warning'])) {
                                             foreach($_SESSION['status_warning'] as $warning_error) {
                                                 unset($_SESSION['status_warning']);
-//                                                echo '<p class="text-center alert alert-warning">'.$warning_error.'</p>';
                                                 echo $warning_error;
                                             }
                                         }
                                     }
-
                                     ?>
                             </form>
 

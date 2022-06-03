@@ -38,16 +38,6 @@ if (isset($_POST['register'])) {
             'cost' => 12
         ];
         $password_hashed = password_hash($password, PASSWORD_BCRYPT, $option);
-
-        // Password encryption to increase data security
-//        $password = md5($password_1);
-
-        // Inserting data into table
-//        $query = "INSERT INTO users (username, email, password)
-//                  VALUES('$username', '$email', '$password')";
-//
-//        mysqli_query($db, $query);
-
         $insert_query = $dbClient->insert('users',
             [
                 'username',
@@ -60,12 +50,6 @@ if (isset($_POST['register'])) {
             ]);
             array_push($warning_errors, "User Created Successfuly");
     }
-//    else {
-//        $_SESSION['status_warning'] = $warning_errors;
-////        $_SESSION['status_danger'] = $danger_errors;
-//        // Page on which the user will be
-//        // redirected after logging in
-//    }
     $_SESSION['status_warning'] = $warning_errors;
     header('location: register.php');
     exit;
