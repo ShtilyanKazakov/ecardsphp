@@ -17,26 +17,57 @@ if (isset($_POST['login'])) {
         $warning_errors[] = "Password is required";
     }
 
+//    $option = [
+//        'cost' => 12
+//    ];
+//    $password_hashed = password_hash($password, PASSWORD_BCRYPT, $option);
+
     //        $password = md5($password);
-    $query = "SELECT * FROM users WHERE username='$username' AND password='$password'";
+
+// !------
+// For hashed password credentials check with query that is searching only for username but NOT password. WAY???
+// !------
+    $query = "SELECT * FROM users WHERE username='$username'"; //$query = "SELECT * FROM users WHERE username='$username' AND password='$password' ";
     $results = $dbClient->mysqli_query_func($query);
     $user = mysqli_fetch_assoc($results);
 
-    if ($user['username'] !== $username || $user['password'] !== $password) {
-        $warning_errors[] = "Wrong Username/Password credentials!!!"; // array_push($warning_errors, "Wrong Username credentials!!!");
+    if ($user['username'] !== $username) {
+        $warning_errors[] = "Wrong Username credentials!!!"; // array_push($warning_errors, "Wrong Username credentials!!!");
+    }
+    if (!password_verify($password, $user['password'])) {
+        $warning_errors[] = "Password is invalid!";
     }
 
     if (count($warning_errors) == 0) {
+//        if (mysqli_num_rows($results) == 1) {
+//            $_SESSION['username'] = $username;
+//            $_SESSION['user_id'] = $user['id'];
+//            $_SESSION['success'] = "You are now logged in";
+//            header('Location: dashboard.php');
+//            exit;
+//        }
+        $query = "SELECT * FROM users WHERE username='$username'";
+        $results = $dbClient->mysqli_query_func($query);
+//        $user = mysqli_fetch_assoc($results);
+
         if (mysqli_num_rows($results) == 1) {
-            $_SESSION['username'] = $username;
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['success'] = "You are now logged in";
-            header('Location: dashboard.php');
-            exit;
+            while ($row = mysqli_fetch_assoc($results)) {
+                if (password_verify($password, $row['password'])) {
+                    $_SESSION['username'] = $row['username'];
+                    $_SESSION['user_id'] = $row['id'];
+                    header("Location: dashboard.php");
+                    exit;
+                }
+                else{
+                    $warning_errors[] = "Username or Password is invalid!";
+                }
+            }
         }
-    } else {
+//        header('location: login.php');
+//        exit;
+    }else {
         $_SESSION['status_warning'] = $warning_errors;
+        header('location: login.php');
+        exit;
     }
-    header('location: login.php');
-    exit;
 }

@@ -79,7 +79,8 @@ include('../includes/register.inc.php');
                                         if(isset($_SESSION['status_warning'])) {
                                             foreach($_SESSION['status_warning'] as $warning_error) {
                                                 unset($_SESSION['status_warning']);
-                                                echo '<p class="text-center alert alert-warning">'.$warning_error.'</p>';
+//                                                echo '<p class="text-center alert alert-warning">'.$warning_error.'</p>';
+                                                echo $warning_error;
                                             }
                                         }
                                     }

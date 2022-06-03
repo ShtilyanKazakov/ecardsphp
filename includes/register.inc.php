@@ -13,22 +13,31 @@ if (isset($_POST['register'])) {
     // SQL injections
     $username = $dbClient->real_escape_string($_POST['username']);
     $email = $dbClient->real_escape_string($_POST['email']);
-    $password_1 = $dbClient->real_escape_string($_POST['password']);
-    $password_2 = $dbClient->real_escape_string($_POST['repeat_password']);
+    $password = $dbClient->real_escape_string($_POST['password']);
+    $repeat_password = $dbClient->real_escape_string($_POST['repeat_password']);
 
     // Ensuring that the user has not left any input field blank
     // error messages will be displayed for every blank input
     if (empty($username)) { array_push($warning_errors, "Username is required"); }
     if (empty($email)) { array_push($warning_errors, "Email is required"); }
-    if (empty($password_1)) { array_push($warning_errors, "Password is required"); }
+    if (empty($password)) { array_push($warning_errors, "Password is required"); }
 
-    if ($password_1 != $password_2) {
-        array_push($warning_errors, "The two passwords do not match"); // danger error
+    if ($password != $repeat_password) {
+        array_push($warning_errors, "Passwords do not match"); // danger error
         // Checking if the passwords match
+    }
+
+    $check_dublicates = $dbClient->select('users', ['username', 'email', 'password'], "username='$username' OR email='$email'");
+    if (mysqli_num_rows($check_dublicates)>0) {
+        array_push($warning_errors, "Username or Email alreay exists");
     }
 
     // If the form is error free, then register the user
     if (count($warning_errors) == 0) {
+        $option = [
+            'cost' => 12
+        ];
+        $password_hashed = password_hash($password, PASSWORD_BCRYPT, $option);
 
         // Password encryption to increase data security
 //        $password = md5($password_1);
@@ -45,16 +54,19 @@ if (isset($_POST['register'])) {
                 'email',
                 'password',
             ], [
-                $_POST['username'],
-                $_POST['email'],
-                $_POST['password'],
+                $username,
+                $email,
+                $password_hashed,
             ]);
-    } else {
-        $_SESSION['status_warning'] = $warning_errors;
-//        $_SESSION['status_danger'] = $danger_errors;
-        // Page on which the user will be
-        // redirected after logging in
+            array_push($warning_errors, "User Created Successfuly");
     }
+//    else {
+//        $_SESSION['status_warning'] = $warning_errors;
+////        $_SESSION['status_danger'] = $danger_errors;
+//        // Page on which the user will be
+//        // redirected after logging in
+//    }
+    $_SESSION['status_warning'] = $warning_errors;
     header('location: register.php');
     exit;
 }
