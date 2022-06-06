@@ -65,6 +65,20 @@ session_start();
             </ul>
         </div>
         <?php } ?>
+
+        <?php
+        if($_SESSION['username'] === "Eugene") {
+            ?>
+            <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../public/create_card.php">Create</a>
+                    </li>
+                </ul>
+            </div>
+        <?php
+        }
+        ?>
     </nav>
 
     <!-- Optional JavaScript -->
