@@ -14,7 +14,9 @@ include('../includes/login.inc.php');
 </head>
 <body>
 <section class="vh-100 bg-image"
-         style="background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp');">
+         style="background: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp')
+         /*no-repeat center center fixed;*/
+">
     <div class="mask d-flex align-items-center h-100 gradient-custom-3">
         <div class="container h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
@@ -42,6 +44,9 @@ include('../includes/login.inc.php');
 
                                 <p class="text-center text-muted mt-5 mb-0">Do not have an account? <a href="register.php"
                                                                                                         class="fw-bold text-body"><u>Register here</u></a></p>
+                                <p class="text-center text-muted mt-5 mb-0">Forgot your password? <a href="request_reset.php"
+                                                                                                       class="fw-bold text-body"><u>Forgotten password</u></a></p>
+<!--                                <a href="request_reset.php">Forgotten password</a>-->
                                 <?php
                                 if(count($_SESSION['status_warning']) > 0) {
                                     if(isset($_SESSION['status_warning'])) {

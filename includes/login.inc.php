@@ -17,15 +17,20 @@ if (isset($_POST['login'])) {
         $warning_errors[] = "Password is required";
     }
 
-    $query = "SELECT * FROM users WHERE username='$username'";
+    $query = "SELECT * FROM users WHERE username='$username' AND email_verified_at IS NOT NULL";
     $results = $dbClient->mysqli_query_func($query);
     $user = mysqli_fetch_assoc($results);
+
 
     if ($user['username'] !== $username) {
         $warning_errors[] = "Wrong Username credentials!!!";
     }
     if (!password_verify($password, $user['password'])) {
         $warning_errors[] = "Password is invalid!";
+    }
+
+    if(empty($user['email_verified_at'])) {
+        $warning_errors[] = "Account not verified!!";
     }
 
     if (count($warning_errors) == 0) {

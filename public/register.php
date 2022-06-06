@@ -1,7 +1,7 @@
 <?php
 session_start();
 //$errors = array();
-include('../includes/register.inc.php');
+//include('../includes/register.inc.php');
 ?>
 <!doctype html>
 <html lang="en">
@@ -24,7 +24,7 @@ include('../includes/register.inc.php');
                         <div class="card-body p-5">
                             <h2 class="text-uppercase text-center mb-5">Create an account</h2>
 
-                            <form method="POST" action="">
+                            <form method="POST" action="../includes/store-registration-send-email.inc.php">
 
                                 <div class="form-outline mb-4">
                                     <label class="form-label" for="form3Example1cg">Username</label>
@@ -58,7 +58,8 @@ include('../includes/register.inc.php');
                                         if(isset($_SESSION['status_warning'])) {
                                             foreach($_SESSION['status_warning'] as $warning_error) {
                                                 unset($_SESSION['status_warning']);
-                                                echo $warning_error;
+                                                $warning_display = '<p class="text-center alert alert-warning">'.$warning_error.'</p>';
+                                                echo htmlspecialchars($warning_display);
                                             }
                                         }
                                     }

@@ -12,12 +12,13 @@ include('../db.php');
 //Load Composer's autoloader
 require '../vendor/autoload.php';
 $dbClient = new DatabaseClient();
+
 if (isset($_POST['email'])) {
     $email_to = $_POST['email'];
 
     $code = uniqid(true);
     $query = $dbClient->mysqli_query_func("INSERT INTO reset_password_codes(code, email) VALUES('$code', '$email_to')");
-
+    $password_email = '';
     if (!$query) {
         exit("Error");
     }
@@ -31,13 +32,13 @@ if (isset($_POST['email'])) {
         $mail->isSMTP();                                            //Send using SMTP
         $mail->Host = 'smtp.gmail.com';                     //Set the SMTP server to send through
         $mail->SMTPAuth = true;                                   //Enable SMTP authentication
-        $mail->Username = '';                     //SMTP username
-        $mail->Password = '';                               //SMTP password
+        $mail->Username = 'eugenes.site19@gmail.com';                     //SMTP username
+        $mail->Password = $password_email;                               //SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
         $mail->Port = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
         //Recipients
-        $mail->setFrom('', '');
+        $mail->setFrom('eugenes.site19@gmail.com', 'Eugene_Mailer');
         $mail->addAddress($email_to);     //Add a recipient
 //    $mail->addAddress('ellen@example.com');               //Name is optional
         $mail->addReplyTo('no-reply@example.com', 'No reply');
@@ -52,7 +53,7 @@ if (isset($_POST['email'])) {
         $url = "http://" . $_SERVER["HTTP_HOST"] . dirname($_SERVER["PHP_SELF"]) . "/reset_password.php?code=$code";
         $mail->isHTML(true);                                  //Set email format to HTML
         $mail->Subject = 'eCards Platform Reset Password';
-        $mail->Body = "Requested password reset link: $code Click Link <a href='$url'>link</a>  ";
+        $mail->Body = "Requested password reset link. Click <a href='$url'>Link</a>  ";
         $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
         $mail->send();
