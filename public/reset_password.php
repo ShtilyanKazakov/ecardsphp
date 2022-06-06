@@ -12,8 +12,8 @@ $get_email_query = $dbClient->mysqli_query_func("SELECT email FROM reset_passwor
 //if(!mysqli_num_rows($get_email_query) == 0) {
 //    exit("Cannot find page!11111");
 //}
-
 if(isset($_POST["password"])) {
+    // Add error validation
     $password = $_POST["password"];
 //    $password = md5($_POST["password"]); // REPLACE ENCRYPTION!!!!!
     $option = [
@@ -25,7 +25,7 @@ if(isset($_POST["password"])) {
     $query = $dbClient->mysqli_query_func("UPDATE users SET password='$password_hashed' WHERE email='$email'");
 
     if($query) {
-        $query = $dbClient->mysqli_query_func("DELETE FROM reset_password_codes WHERE code='$code'");
+        $query = $dbClient->mysqli_query_func("DELETE FROM reset_password_codes WHERE code='$code'"); // Switch to update when is clicked
         exit("Password Updated!");
     } else {
         exit("Password Failed to update!");
