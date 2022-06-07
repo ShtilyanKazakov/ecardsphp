@@ -1,7 +1,8 @@
 <?php
-use PHPMailer\PHPMailer\PHPMailer;
+// use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
 
 include('../db.php');
 
@@ -20,10 +21,11 @@ if (isset($_POST['register']) && $_POST['email']) {
         $option = [
             'cost' => 12
         ];
-        $password_email = '';
+        $password_email = 'xgfjjjrvwagrxhwy';
+        $link_assembly = "/project/ecardsphp/public";
         $password_hashed = password_hash($password, PASSWORD_BCRYPT, $option);
         $dbClient->mysqli_query_func("INSERT INTO users (username, email, password, status, email_verification_link) VALUES('" . $username . "', '" . $email_to . "', '" . $password_hashed . "', 0, '" . $token . "')");
-        $link2 = "http://" . $_SERVER["HTTP_HOST"] . "/ecards-sending-cards/public" . "/verify-email.php?code=" . $_POST['email']. "&token=" . $token . " ";
+        $link2 = "http://" . $_SERVER["HTTP_HOST"] . $link_assembly . "/verify-email.php?code=" . $_POST['email']. "&token=" . $token . " ";
         $link = "<a href='$link2'>Click and Verify Email</a>";
 //        require_once('phpmail/PHPMailerAutoload.php');
         $mail = new PHPMailer(true);
@@ -32,14 +34,14 @@ if (isset($_POST['register']) && $_POST['email']) {
 // enable SMTP authentication
         $mail->SMTPAuth = true;
 // GMAIL username
-        $mail->Username = 'eugenes.site19@gmail.com'; //SMTP username
+        $mail->Username = 'phptesttestov@gmail.com'; //SMTP username
         $mail->Password = $password_email;
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
 // sets GMAIL as the SMTP server
         $mail->Host = "smtp.gmail.com";
 // set the SMTP port for the GMAIL server
         $mail->Port = "465";
-        $mail->setFrom('eugenes.site19@gmail.com', 'Eugene_Mailer');
+        $mail->setFrom('phptesttestov@gmail.com', 'Ecards_Registration');
         $mail->AddAddress($email_to);
         $mail->addReplyTo('no-reply@example.com', 'No reply');
         $mail->Subject = 'Register via Email';

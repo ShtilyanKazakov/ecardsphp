@@ -15,25 +15,13 @@ session_start();
 
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+        <!-- <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
                     <a class="nav-link" href="#">Browse</a>
                 </li>
-                <!-- <li class="nav-item">
-                <a class="nav-link" href="//codeply.com">Codeply</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li> -->
             </ul>
-        </div>
+        </div> -->
         <div class="mx-auto order-0">
             <a class="navbar-brand mx-auto" href="index.php">Ecards</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
@@ -43,42 +31,36 @@ session_start();
         <?php
         if (isset($_SESSION['user_id']) && isset($_SESSION['username'])) {
         ?>
-        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="logout.php">Logout</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><?php echo $_SESSION['username'];  ?></a>
-                </li>
-            </ul>
-        </div>
-        <?php } else { ?>
-        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="register.php">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="login.php">Login</a>
-                </li>
-            </ul>
-        </div>
-        <?php } ?>
-
-        <?php
-        if($_SESSION['username'] === "Eugene") {
-            ?>
             <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="../public/create_card.php">Create</a>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <?php echo $_SESSION['username'];  ?> </a>
+                        <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="index.php">Browse</a>
+                            <?php
+                            if ($_SESSION['username'] == 'Admin'){
+                                echo '<a class="dropdown-item" href="dashboard.php">Admin Panel</a>';
+                            }                       
+                            ?>
+                            <a class="dropdown-item" href="logout.php">Logout</a>
+                        </div>
                     </li>
                 </ul>
             </div>
-        <?php
-        }
-        ?>
+        <?php } else { ?>
+            <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="register.php">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.php">Login</a>
+                    </li>
+                </ul>
+            </div>
+        <?php } ?>
     </nav>
 
     <!-- Optional JavaScript -->
