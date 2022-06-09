@@ -25,9 +25,9 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" type="text/css" href="assets/CSS/dashboard_style.css">
+<!--    <link rel="stylesheet" type="text/css" href="assets/CSS/dashboard_style.css">-->
     <!--    <link rel="stylesheet" href="assets/CSS/profile_avatar.css"/>-->
-    <link rel="shortcut icon" type="image/x-icon" href="assets/images/Monogram.png">
+<!--    <link rel="shortcut icon" type="image/x-icon" href="assets/images/Monogram.png">-->
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
@@ -64,14 +64,15 @@
                         <div class="lineSplit"></div>
                         <div><textarea class="messageBox" id="postMessage" name="description" onkeyup="gotkey()" placeholder="What's happening?"></textarea></div>
                         <input type="hidden" name="MAX_FILE_SIZE" value="300000">
+<!--                        <input name="image"-->
+<!--                               accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/quicktime" multiple=""-->
+<!--                               tabindex="-1" type="file" data-focusable="true">-->
+                        <input type="file" class="form-control" name="image" id="profile_picture"
+                               placeholder="Profile Picture">
 
-                        <input name="image"
-                               accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/quicktime" multiple=""
-                               tabindex="-1" type="file" data-focusable="true">
-
-                        <p><input type="submit"
+                        <input type="submit"
                                   style="background-image: url(https://lh3.googleusercontent.com/CpBwweN6YgNQGK_9LRvXKI8KEEcnMORDQGXj3XazCsK_dWlp-HzUT7YF5h7gEWP1yQ48=w300)"
-                                  class="post_Button" id="submit_Post" name="submit" value="Tweet"></p>
+                                  class="post_Button" id="submit_Post" name="submit" value="Tweet">
             </form>
 
 
