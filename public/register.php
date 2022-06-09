@@ -95,9 +95,7 @@ if (isset($_POST['register'])) {
     $mail->Subject = 'Ecards Platform Registration Email Verification';
     $mail->IsHTML(true);
     $mail->Body = 'A user account has been created on the Ecards platform with this email. If this was you click this link to verify ' . $link . '';
-    if ($mail->send()) {
-      echo "Check Your Email box and Click on the email verification link.";
-    } else {
+    if (!$mail->send()) {
       echo "Mail Error - >" . $mail->ErrorInfo;
     }
   }
@@ -113,7 +111,7 @@ if (isset($_POST['register'])) {
   <div class="mb-3">
     <label for="name" class="form-label">Username</label>
     <input type="text" class="form-control <?php echo !$usernameErr ?:
-                                              'is-invalid'; ?>" id="username" name="username" placeholder="Enter your userame" value="<?php echo $username; ?>">
+                                              'is-invalid'; ?>" id="username" name="username" placeholder="Enter your username" value="<?php echo $username; ?>">
     <div class="invalid-feedback">
       <?php echo $usernameErr; ?>
     </div>
