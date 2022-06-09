@@ -1,82 +1,153 @@
 <?php
-session_start();
-//$errors = array();
-//include('../includes/register.inc.php');
+
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
+
+include '../utilities/header.php';
+include_once('../db.php');
+require '../vendor/autoload.php';
+
+$dbClient = new DatabaseClient();
+
+// Set vars to empty values
+$username = $email = $password = $repeat_password = '';
+$usernameErr = $emailErr = $passwordErr = $repeatpasswordErr = $matchingpasswordsErr = '';
+
+// Form submit
+if (isset($_POST['register'])) {
+
+  // Validate name
+  if (empty($_POST['username'])) {
+    $usernameErr = 'Username is required';
+  } elseif (mysqli_num_rows($dbClient->select('users', ['*'], "username='" . $_POST['username'] . "'")) > 0) {
+    $usernameErr = 'Username is already taken';
+  } else {
+    $username = $dbClient->real_escape_string(filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+  }
+
+  // Validate email
+  if (empty($_POST['email'])) {
+    $emailErr = 'Email is required';
+  } elseif (mysqli_num_rows($dbClient->select('users', ['*'], "email='" . $_POST['email'] . "'")) > 0) {
+    $emailErr = 'Email has already been used';
+  } else {
+    $email = $dbClient->real_escape_string(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL));
+  }
+
+  // Validate password
+  if (empty($_POST['password'])) {
+    $passwordErr = 'Password is required';
+  } else {
+    $password = $dbClient->real_escape_string($_POST['password']);
+  }
+
+  if (empty($_POST['repeat_password'])) {
+    $repeatpasswordErr = 'Repeat password is required';
+  } else {
+    $repeat_password = $dbClient->real_escape_string($_POST['repeat_password']);
+  }
+
+  if ($password != $repeat_password) {
+    $matchingpasswordsErr = "The passwords you have entered do not match";
+  }
+
+  if (empty($usernameErr) && empty($emailErr) && empty($passwordErr) && empty($repeatpasswordErr) && empty($matchingpasswordsErr)) {
+    $token = md5($email) . rand(10, 9999);
+    $password_email = 'xgfjjjrvwagrxhwy';
+    $link_assembly = "/project/ecardsphp/public";
+    $option = [
+      'cost' => 12
+    ];
+    $password_hashed = password_hash($password, PASSWORD_BCRYPT, $option);
+    $insert_query = $dbClient->insert(
+      'users',
+      [
+        'username',
+        'email',
+        'password',
+        'status',
+        'email_verification_link'
+      ],
+      [
+        $username,
+        $email,
+        $password_hashed,
+        0,
+        $token
+      ]
+    );
+    $link2 = "http://" . $_SERVER["HTTP_HOST"] . $link_assembly . "/verify-email.php?code=" . $_POST['email'] . "&token=" . $token . " ";
+    $link = "<a href='$link2'>Click this to verify your account</a>";
+    $mail = new PHPMailer(true);
+    $mail->CharSet = "utf-8";
+    $mail->IsSMTP();
+    $mail->SMTPAuth = true;
+    // GMAIL username
+    $mail->Username = 'phptesttestov@gmail.com';
+    $mail->Password = $password_email;
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+    $mail->Host = "smtp.gmail.com";
+    $mail->Port = "465";
+    $mail->setFrom('phptesttestov@gmail.com', 'Ecards_Registration');
+    $mail->AddAddress($email);
+    $mail->addReplyTo('no-reply@example.com', 'No reply');
+    $mail->Subject = 'Ecards Platform Registration Email Verification';
+    $mail->IsHTML(true);
+    $mail->Body = 'A user account has been created on the Ecards platform with this email. If this was you click this link to verify ' . $link . '';
+    if ($mail->send()) {
+      echo "Check Your Email box and Click on the email verification link.";
+    } else {
+      echo "Mail Error - >" . $mail->ErrorInfo;
+    }
+  }
+  header('location: post_register.php');
+}
 ?>
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-    <title>Register</title>
-</head>
-<body>
-<section class="vh-100 bg-image"
-         style="background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp');">
-    <div class="mask d-flex align-items-center h-100 gradient-custom-3">
-        <div class="container h-100">
-            <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col-12 col-md-9 col-lg-7 col-xl-6">
-                    <div class="card" style="border-radius: 15px;">
-                        <div class="card-body p-5">
-                            <h2 class="text-uppercase text-center mb-5">Create an account</h2>
-
-                            <form method="POST" action="../includes/store-registration-send-email.inc.php">
-
-                                <div class="form-outline mb-4">
-                                    <label class="form-label" for="form3Example1cg">Username</label>
-                                    <input type="text" name="username" id="form3Example1cg" class="form-control form-control-lg" />
-                                </div>
-
-                                <div class="form-outline mb-4">
-                                    <label class="form-label" for="form3Example3cg">Email</label>
-                                    <input type="email" name="email" id="form3Example3cg" class="form-control form-control-lg" />
-                                </div>
-
-                                <div class="form-outline mb-4">
-                                    <label class="form-label" for="form3Example4cg">Password</label>
-                                    <input type="password" name="password" id="form3Example4cg" class="form-control form-control-lg" />
-                                </div>
-
-                                <div class="form-outline mb-4">
-                                    <label class="form-label" for="form3Example4cdg">Repeat your password</label>
-                                    <input type="password" name="repeat_password" id="form3Example4cdg" class="form-control form-control-lg" />
-                                </div>
-
-                                <div class="d-flex justify-content-center">
-                                    <button type="submit" name="register"
-                                            class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
-                                </div>
-
-                                <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="login.php"
-                                                                                                        class="fw-bold text-body"><u>Login here</u></a></p>
-                                    <?php
-                                    if(count($_SESSION['status_warning']) > 0) {
-                                        if(isset($_SESSION['status_warning'])) {
-                                            foreach($_SESSION['status_warning'] as $warning_error) {
-                                                unset($_SESSION['status_warning']);
-                                                $warning_display = '<p class="text-center alert alert-warning">'.$warning_error.'</p>';
-                                                echo htmlspecialchars($warning_display);
-                                            }
-                                        }
-                                    }
-                                    ?>
-                            </form>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+</br>
+<h2>Register</h2>
+<span style="color: #FF0000"> All fields are required </span>
+<form method="POST" action="<?php echo htmlspecialchars(
+                              $_SERVER['PHP_SELF']
+                            ); ?>" class="mt-4 w-75">
+  <div class="mb-3">
+    <label for="name" class="form-label">Username</label>
+    <input type="text" class="form-control <?php echo !$usernameErr ?:
+                                              'is-invalid'; ?>" id="username" name="username" placeholder="Enter your userame" value="<?php echo $username; ?>">
+    <div class="invalid-feedback">
+      <?php echo $usernameErr; ?>
     </div>
-</section>
-
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>
-
-</body>
-</html>
+  </div>
+  <div class="mb-3">
+    <label for="email" class="form-label">Email</label>
+    <input type="email" class="form-control <?php echo !$emailErr ?:
+                                              'is-invalid'; ?>" id="email" name="email" placeholder="Enter your email" value="<?php echo $email; ?>">
+    <div class="invalid-feedback">
+      <?php echo $emailErr; ?>
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="body" class="form-label">Password</label>
+    <input class="form-control <?php echo !$passwordErr ?:
+                                  'is-invalid'; ?>" type="password" name="password" id="password" placeholder="Enter your password" />
+    <div class="invalid-feedback">
+      <?php echo $passwordErr; ?>
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="body" class="form-label">Repeat Password</label>
+    <input class="form-control <?php echo !$repeatpasswordErr ?:
+                                  'is-invalid'; ?>" type="password" name="repeat_password" id="repeat_password" placeholder="Repeat your password" />
+    <div class="invalid-feedback">
+      <?php echo $repeatpasswordErr; ?>
+    </div>
+  </div>
+  <div style="color: #FF0000">
+    <?php echo $matchingpasswordsErr; ?>
+  </div>
+  <div class="mb-3">
+    <input type="submit" name="register" value="Send" class="btn btn-dark btn-block w-100">
+  </div>
+</form>
+<p class="text-center text-muted">Already have an account? <a href="login.php" class="fw-bold text-body"><u>Login here</u></a></p>
+<?php include '../utilities/footer.php'; ?>
