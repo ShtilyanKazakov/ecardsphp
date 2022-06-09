@@ -1,60 +1,54 @@
-<section class="features" id="features" style="width: 50%;margin: 5% auto;text-align: center;"></section>
+<?php
+ini_set('display_errors',1);
+error_reporting(E_ALL);
 
-<script type="text/javascript">
-    // Rendeing throught Dom the Features section
-    const features_section = document.querySelector('.features');
-    const row_child = document.createElement('div');
-    row_child.classList.add('row');
-    features_section.appendChild(row_child);
+include_once('../db.php');
+//include_once('../includes/edit_card.inc.php');
+$dbClient = new DatabaseClient();
+//$id = $_GET['card_id'];
+//$select_card = $dbClient->select('cards', ['card_id', 'description', 'image']);
 
-    const features_object = [
-        {
-            src: '../views/cards/image_1.jpg',
-            title: 'Easily Customised'
-        },
-        {
-            src: '../views/cards/image_2.jpg',
-            title: 'Responsive Design'
-        },
-        {
-            src: '../views/cards/image_3.jpg',
-            title: 'Modern Design'
-        },
-        {
-            src: 'https://source.unsplash.com/random/200x200/',
-            title: 'Clean Code'
-        },
-    ];
-    function featuresContent(src, title, accessButton) {
-        return row_child.innerHTML += `
-    <div class="card" style="width: 18rem;">
-        <img class="card-img-top" width="200px" height="200px" src="${src}" alt="Card image cap">
+$select_card = $dbClient->mysqli_query_func( "SELECT * FROM cards");
+//$select_card = $dbClient->select( "cards", ['card_id', 'description', 'image']);
+//$select_card = $dbClient->select('cards', ['card_id', 'users_id', 'code', 'description', 'image']);
+
+
+//var_dump($select_card);
+//if (mysqli_num_rows($select_card) > 0) {
+while ($row = mysqli_fetch_assoc($select_card)) {
+    $image_src = $row['image'];
+    ?>
+        <div class="card" style="width: 18rem;">
+    <?php if(isset($_SESSION['user_id']) && isset($_SESSION['username'])) { ?>
+            <a href="../public/card_view.php?card_id=<?= $row['card_id']; ?>">
+            <img class="card-img-top" width="200px" height="200px" src="<?= $image_src; ?>" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title"><?= $row['card_id']; ?></h5>
+                <p class="card-text"><?= $row['description']; ?></p>
+                <!--            <a href="#" class="btn btn-primary">Go somewhere</a>-->
+    <!--            ${accessButton}-->
+            </div>
+            </a>
+    <?php } else {
+        ?>
+        <img class="card-img-top" width="200px" height="200px" src="<?= $image_src; ?>" alt="Card image cap">
         <div class="card-body">
-            <h5 class="card-title">${title}</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-<!--            <a href="#" class="btn btn-primary">Go somewhere</a>-->
-            ${accessButton}
+            <h5 class="card-title"><?= $row['card_id']; ?></h5>
+            <p class="card-text"><?= $row['description']; ?></p>
+            <!--            <a href="#" class="btn btn-primary">Go somewhere</a>-->
+            <!--            ${accessButton}-->
         </div>
-    </div>
-    `;
-    }
-</script>
+            <?php
+    } ?>
 
-<?php if (isset($_SESSION['user_id']) && isset($_SESSION['username'])) { ?>
-<script type="text/javascript">
 
-    for (const key in Object.entries(features_object)) {
-    featuresContent(features_object[key].src, features_object[key].title, `<a href="#" class="btn btn-primary">Go somewhere</a>`);
-    }
-    </script>
 
-<?php }  else {?>
-<script type="text/javascript">
-
-    for (const key in Object.entries(features_object)) {
-    featuresContent(features_object[key].src, features_object[key].title, '');
-    }
-</script>
+            <?php if(isset($_SESSION['user_id']) && isset($_SESSION['username'])) { ?>
+                <a class="btn btn-primary" role="button" href="../public/edit_card.php?card_id=<?php echo $row['card_id']; ?>">Edit</a>
+                <a class="btn btn-danger" role="button" href="../public/delete_card.php?card_id=<?php echo $row['card_id']; ?>">Delete</a>
+            <?php } else { echo ''; } ?>
+        </div>
 <?php
 }
+//}
 ?>
