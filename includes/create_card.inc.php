@@ -1,58 +1,45 @@
 <?php
-session_start();
+//session_start();
 
 include_once('../db.php');
 $dbClient = new DatabaseClient();
 
-function upload_image()
-{
 
-    define('MAX_FILE_SIZE', 1000000);
-    $permitted = array('image/gif', 'image/jpeg', 'image/png', 'image/pjpeg', 'text/plain');
-    $abs_upload_path = __DIR__ . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR . "cards" . DIRECTORY_SEPARATOR;
-    $filetype = "";
+$code = $dbClient->real_escape_string($_POST['code']);
+$description = $dbClient->real_escape_string($_POST['description']);
+$image = $dbClient->real_escape_string($_POST['image']);
 
-    if ($_FILES['the_file']['size'] > 0 && $_FILES['the_file']['size'] <= MAX_FILE_SIZE) {
-        if ($_FILES['the_file']['error'] == 0) {
-            move_uploaded_file($_FILES["the_file"]["tmp_name"], $abs_upload_path . $_FILES["the_file"]["name"]);
+if (isset($_POST['submit'])) {
+    if (!empty($image) || !empty($description)) {
+        // extensions validations
+        $image_picture_filename = $_FILES["image"]["name"];
+        $tempname = $_FILES["image"]["tmp_name"];
+        $image_path = "../views/cards/" . $image_picture_filename;
+        // Get all the submitted data from the form
 
-            if (in_array($_FILES['the_file']['type'], $permitted)) {
-
-                echo '<img src="../views/cards/' . $_FILES["the_file"]["name"] . '">';
-            } elseif ($filetype == "text") {
-                echo nl2br(file_get_contents("../views/cards/" . $_FILES["the_file"]["name"]));
-            }
-
+        // Now let's move the uploaded image into the folder: image
+        if (move_uploaded_file($tempname, $image_path)) {
+            $msg = "Image uploaded successfully";
         } else {
-            echo "Not permitted filetype.";
+            $msg = "Failed to upload image";
         }
+
+        $dbClient->insert('cards',
+            [
+                'code',
+                'description',
+                'image',
+            ], [
+                $code,
+                htmlspecialchars($description),
+                $image_path,
+            ]);
+    } else {
+        echo "<script>alert('Add Valid Data!');window.location.href='../public/index.php';</script>";
     }
+    header("Location: ../public/create_card.php");
+    exit();
 }
-
-// check if user is logged in if not redirect to login.php
-
-$description = $_POST['description'];
-$card_image = $_POST['image'];
-
-if (!isset($_SESSION['user_id'])) {
-header("Location: login.php");
-die();
-}
-
-// check if a tweet has been submitted if not just show the form
-
-if (isset($_POST["description"]) && !empty($_POST["description"])) {
-$sql = "INSERT INTO cards (id, image, description) VALUES ('{$_SESSION['user_id']}', '{$_FILES['the_file']['name']}', '$description')";
-    $dbClient->mysqli_query_func($sql);
-    upload_image();
-}
-//if (mysqli_query($conn, $sql) == true) {
-//header("Location: ../public/dashboard.php");
-//die();
-//}
-
-
-// if a tweet has been submitted the save it in the database an then show the form
 
 
 ?>

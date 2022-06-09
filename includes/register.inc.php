@@ -27,8 +27,10 @@ if (isset($_POST['register'])) {
         // Checking if the passwords match
     }
 
-    $check_dublicates = $dbClient->select('users', ['username', 'email', 'password'], "username='$username' OR email='$email'");
-    if (mysqli_num_rows($check_dublicates)>0) {
+    $check_duplicates = $dbClient->select('users', ['*'], "username='$username' OR email='$email'");
+//    $check_duplicates = $dbClient->mysqli_query_func("SELECT * FROM users WHERE username='$username' OR email='$email'")
+    if (mysqli_num_rows($check_duplicates)>0) {
+        header("Location: ../public/index.php?message=User name or Email id already exists.");
         array_push($warning_errors, "Username or Email alreay exists");
     }
 
