@@ -144,7 +144,7 @@ if (isset($_POST['register'])) {
     <?php echo $matchingpasswordsErr; ?>
   </div>
   <div class="mb-3">
-    <input type="submit" name="register" value="Send" class="btn btn-dark btn-block w-100">
+    <input type="submit" name="register" value="Register" class="btn btn-dark btn-block w-100">
   </div>
 </form>
 <p class="text-center text-muted">Already have an account? <a href="login.php" class="fw-bold text-body"><u>Login here</u></a></p>
