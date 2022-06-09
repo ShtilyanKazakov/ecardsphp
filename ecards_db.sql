@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jun 09, 2022 at 03:36 PM
+-- Generation Time: Jun 09, 2022 at 07:06 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -33,7 +33,8 @@ CREATE TABLE `cards` (
   `users_id` int(11) DEFAULT NULL,
   `code` varchar(255) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
-  `image` varchar(255) DEFAULT NULL
+  `image` varchar(255) DEFAULT NULL,
+  `flag_delete` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -144,7 +145,7 @@ ALTER TABLE `reset_password_codes`
 -- AUTO_INCREMENT for table `send_card`
 --
 ALTER TABLE `send_card`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `users`

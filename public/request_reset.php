@@ -18,7 +18,7 @@ if (isset($_POST['email'])) {
 
     $code = uniqid(true);
     $query = $dbClient->mysqli_query_func("INSERT INTO reset_password_codes(code, email) VALUES('$code', '$email_to')");
-    $password_email = '';
+    $password_email = 'xgfjjjrvwagrxhwy';
     if (!$query) {
         exit("Error");
     }
@@ -32,13 +32,13 @@ if (isset($_POST['email'])) {
         $mail->isSMTP();                                            //Send using SMTP
         $mail->Host = 'smtp.gmail.com';                     //Set the SMTP server to send through
         $mail->SMTPAuth = true;                                   //Enable SMTP authentication
-        $mail->Username = 'eugenes.site19@gmail.com';                     //SMTP username
+        $mail->Username = 'phptesttestov@gmail.com';                     //SMTP username
         $mail->Password = $password_email;                               //SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
         $mail->Port = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
         //Recipients
-        $mail->setFrom('eugenes.site19@gmail.com', 'Eugene_Mailer');
+        $mail->setFrom('phptesttestov@gmail.com', 'RG_Mailer');
         $mail->addAddress($email_to);     //Add a recipient
 //    $mail->addAddress('ellen@example.com');               //Name is optional
         $mail->addReplyTo('no-reply@example.com', 'No reply');

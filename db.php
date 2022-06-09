@@ -19,8 +19,8 @@ class DatabaseClient
     {
         $this->host = 'localhost';
         $this->username = 'root';
-        $this->password = '123123';
-        $this->db = 'ecards_db';
+        $this->password = 'root';
+        $this->db = 'testimonial_ecards_db';
 
         $this->conn = new mysqli($this->host, $this->username, $this->password, $this->db);
         return $this->conn;

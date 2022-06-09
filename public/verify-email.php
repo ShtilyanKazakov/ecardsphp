@@ -22,7 +22,7 @@ if($_GET['code'] && $_GET['token']) {
 }
 else
 {
-    $msg = "Danger! Your something goes to wrong.";
+    $msg = "Something went wrong!";
 }
 ?>
 <!doctype html>

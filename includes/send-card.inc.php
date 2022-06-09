@@ -30,6 +30,7 @@ if (isset($_POST['email'])) {
 //    var_dump($card_id_get);
 //    var_dump($code);
     $password_email = 'xgfjjjrvwagrxhwy';
+    $link_assembly = "/ecardsphp/public";
     if (!$query) {
         exit("Error");
     }
@@ -54,7 +55,8 @@ if (isset($_POST['email'])) {
         $mail->addReplyTo('no-reply@example.com', 'No reply');
 
         //Content
-        $url = "http://" . $_SERVER["HTTP_HOST"] . "/ecards-sending-cards/public" . "/greetings-view.php?code=$code";
+//        $url = "http://" . $_SERVER["HTTP_HOST"] . "/ecards-sending-cards/public" . "/greetings-view.php?code=$code";
+        $url = "http://" . $_SERVER["HTTP_HOST"] . $link_assembly . "/greetings-view.php?code=$code";
         $mail->isHTML(true);                                  //Set email format to HTML
         $mail->Subject = 'eCards Platform - Sending you gift Cards';
         $mail->Body = "See your gift card. Click <a href='$url'>Link</a>, sent by: '$user_in_session_id'  ";
