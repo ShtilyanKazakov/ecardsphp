@@ -1,15 +1,11 @@
 <?php
 
-
-//Import PHPMailer classes into the global namespace
-//These must be at the top of your script, not inside a function
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 include('../db.php');
-
-//Load Composer's autoloader
+include('../utilities/header.php');
 require '../vendor/autoload.php';
 $dbClient = new DatabaseClient();
 
@@ -23,12 +19,10 @@ if (isset($_POST['email'])) {
         exit("Error");
     }
 
-    //Create an instance; passing `true` enables exceptions
     $mail = new PHPMailer(true);
 
     try {
         //Server settings
-//    $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
         $mail->isSMTP();                                            //Send using SMTP
         $mail->Host = 'smtp.gmail.com';                     //Set the SMTP server to send through
         $mail->SMTPAuth = true;                                   //Enable SMTP authentication
@@ -40,14 +34,7 @@ if (isset($_POST['email'])) {
         //Recipients
         $mail->setFrom('phptesttestov@gmail.com', 'RG_Mailer');
         $mail->addAddress($email_to);     //Add a recipient
-//    $mail->addAddress('ellen@example.com');               //Name is optional
         $mail->addReplyTo('no-reply@example.com', 'No reply');
-//    $mail->addCC('cc@example.com');
-//    $mail->addBCC('bcc@example.com');
-
-        //Attachments
-//    $mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
-//    $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
 
         //Content
         $url = "http://" . $_SERVER["HTTP_HOST"] . dirname($_SERVER["PHP_SELF"]) . "/reset_password.php?code=$code";
@@ -66,16 +53,7 @@ if (isset($_POST['email'])) {
 
 ?>
 
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
+</br>
 <form method="post">
     <div class="form-group">
         <label for="exampleInputEmail1">Email address</label>
@@ -84,17 +62,8 @@ if (isset($_POST['email'])) {
         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
     </div>
     <div class="form-group">
-        <input type="submit" name="submit" value="Reset email">
+        <input type="submit" name="submit" value="Reset email" class="btn btn-dark btn-block w-100">
     </div>
-    <!--    <div class="form-group">-->
-    <!--        <label for="exampleInputPassword1">Password</label>-->
-    <!--        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">-->
-    <!--    </div>-->
-    <!--    <div class="form-check">-->
-    <!--        <input type="checkbox" class="form-check-input" id="exampleCheck1">-->
-    <!--        <label class="form-check-label" for="exampleCheck1">Check me out</label>-->
-    <!--    </div>-->
-    <!--    <button type="submit" class="btn btn-primary">Submit</button>-->
 </form>
-</body>
-</html>
+
+<?php include '../utilities/footer.php'; ?>
